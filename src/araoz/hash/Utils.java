@@ -41,4 +41,32 @@ public class Utils {
         return bloques;
     }
 
+    public static int[] dividirBloqueAPalabras32(byte[] bloque) {
+        int[] palabras = new int[bloque.length / 4];
+        for (int i = 0; i < bloque.length / 4; i++) {
+            int posicionBase = i * 4;
+            palabras[i] = bloque[posicionBase]
+                | bloque[posicionBase << 8]
+                | bloque[posicionBase << 16]
+                | bloque[posicionBase << 24];
+        }
+        return palabras;
+    }
+
+    public static long[] dividirBloqueAPalabras64(byte[] bloque) {
+        long[] palabras = new long[bloque.length / 8];
+        for (int i = 0; i < bloque.length / 8; i++) {
+            int posicionBase = i * 8;
+            palabras[i] = bloque[posicionBase]
+                | bloque[posicionBase << 8]
+                | bloque[posicionBase << 16]
+                | bloque[posicionBase << 24]
+                | bloque[posicionBase << 32]
+                | bloque[posicionBase << 40]
+                | bloque[posicionBase << 48]
+                | bloque[posicionBase << 56];
+        }
+        return palabras;
+    }
+
 }
