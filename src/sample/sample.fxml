@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <columnConstraints>
+        <ColumnConstraints />
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
+      <RowConstraints />
+    </rowConstraints>
+    <children>
+        <Label text="Ingrese el texto plano:">
+            <font>
+                <Font name="Inter" size="13.0" />
+            </font>
+        </Label>
+        <TextArea fx:id="texto_entrada" prefHeight="200.0" prefWidth="500.0" promptText="Texto plano" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <font>
+                <Font name="Inter" size="13.0" />
+            </font>
+        </TextArea>
+        <GridPane alignment="center" prefHeight="50.0" prefWidth="500.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <Button mnemonicParsing="false" onMouseClicked="#calculateSHA1" text="SHA-1" />
+            <columnConstraints>
+                <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+        <Label fx:id="label_hash_resultado" text="Hash resultado:" GridPane.rowIndex="3" />
+        <TextArea fx:id="texto_salida" editable="false" prefHeight="200.0" prefWidth="200.0" promptText="Hash" GridPane.rowIndex="4">
+            <font>
+                <Font name="Inter" size="13.0" />
+            </font>
+        </TextArea>
+    </children>
+</GridPane>
