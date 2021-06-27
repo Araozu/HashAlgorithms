@@ -11,8 +11,9 @@ public class Utils {
 
     /**
      * Divide un array de bytes en bloques
-     * @param rawInput los bytes
-     * @param tamanoBloque el tamaño de un bloque en bytes
+     *
+     * @param rawInput        los bytes
+     * @param tamanoBloque    el tamaño de un bloque en bytes
      * @param paddingAplicado si el ultimo byte de rawInput ya tiene 1000
      * @return Un array de array de bytes. El primer nivel divide bloques, el segundo nivel contiene los bytes.
      */
@@ -26,7 +27,7 @@ public class Utils {
             System.arraycopy(rawInput, i * tamanoBloque, bloques[i], 0, tamanoBloque);
         }
 
-        int cantidadDeBits = rawInput.length * 8 - (paddingAplicado? 4 : 0);
+        int cantidadDeBits = rawInput.length * 8 - (paddingAplicado ? 4 : 0);
 
         // Aplicar padding al ultimo bloque y almacenarlo en ultimoBloque
         byte[] ultimoBloque = new byte[tamanoBloque];
@@ -37,8 +38,8 @@ public class Utils {
             System.arraycopy(rawInput, (cantidadBloques - 1) * tamanoBloque, ultimoBloque, 0, modulo);
 
             // if (!paddingAplicado) {
-                // Ya que java no tiene unsigned byte, -128 representa 10000000
-                ultimoBloque[modulo] = -128;
+            // Ya que java no tiene unsigned byte, -128 representa 10000000
+            ultimoBloque[modulo] = -128;
             // }
 
             // TODO: Si al final quedan solo unos bytes, ¿Se crea un nuevo bloque lleno de ceros?
@@ -78,14 +79,18 @@ public class Utils {
         return dividir(rawInput, tamanoBloque, tamanoEntradaImpar);
     }
 
+    public static int lShiftInt(int v, int l) {
+        return (v << 24) >>> (24 - l);
+    }
+
     public static int[] dividirBloqueAPalabras32(byte[] bloque) {
         int[] palabras = new int[bloque.length / 4];
         for (int i = 0; i < bloque.length / 4; i++) {
             int posicionBase = i * 4;
-            palabras[i] = bloque[posicionBase]
-                | bloque[posicionBase + 1] << 8
-                | bloque[posicionBase + 2] << 16
-                | bloque[posicionBase + 3] << 24;
+            palabras[i] = lShiftInt(bloque[posicionBase], 24) |
+                lShiftInt(bloque[posicionBase + 1], 16) |
+                lShiftInt(bloque[posicionBase + 2], 8) |
+                lShiftInt(bloque[posicionBase + 3], 0);
         }
         return palabras;
     }

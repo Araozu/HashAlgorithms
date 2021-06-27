@@ -17,11 +17,19 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
-        byte b = (byte) Integer.parseInt("FF", 16);
+    /*
+    01100111010001010010001100000001
+    10011000101110101101110011111110
+    10011000101110101101110011111111
+    10011000101110101101110011111110
+    */
 
-        System.out.println(b);
-        System.out.println(Integer.toBinaryString((b & 0xFF) + 0x100).substring(1));
+    public static void main(String[] args) {
+        int i = 0x67452301;
+        int j = ~0x67452301;
+        System.out.println(Integer.toBinaryString(i));
+        System.out.println(Integer.toBinaryString(j));
+        System.out.println("\n----------------------------------\n");
         launch(args);
     }
 
