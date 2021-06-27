@@ -54,16 +54,47 @@
             </rowConstraints>
         </GridPane>
         <GridPane alignment="center" prefHeight="50.0" prefWidth="500.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
-            <Button mnemonicParsing="false" onMouseClicked="#calculateSHA1" text="SHA-1" GridPane.columnIndex="0" />
-            <Button mnemonicParsing="false" onMouseClicked="#calculateSHA256" text="SHA-256" GridPane.columnIndex="1" />
+            <Button mnemonicParsing="false" text="MD4" GridPane.columnIndex="0" >
+                <font>
+                    <Font name="Inter" size="13.0" />
+                </font>
+            </Button>
+            <Button mnemonicParsing="false" text="MD5" GridPane.columnIndex="1" >
+                <font>
+                    <Font name="Inter" size="13.0" />
+                </font>
+            </Button>
+            <Button mnemonicParsing="false" onMouseClicked="#calculateSHA1" text="SHA-1" GridPane.columnIndex="2" >
+                <font>
+                    <Font name="Inter" size="13.0" />
+                </font>
+            </Button>
+            <Button mnemonicParsing="false" onMouseClicked="#calculateSHA256" text="SHA-256" GridPane.columnIndex="3" >
+                <font>
+                    <Font name="Inter" size="13.0" />
+                </font>
+            </Button>
+            <Button mnemonicParsing="false" text="HMAC" GridPane.columnIndex="4" >
+                <font>
+                    <Font name="Inter" size="13.0" />
+                </font>
+            </Button>
             <columnConstraints>
+                <ColumnConstraints />
+                <ColumnConstraints />
+                <ColumnConstraints />
+                <ColumnConstraints />
                 <ColumnConstraints />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints />
             </rowConstraints>
         </GridPane>
-        <Label fx:id="label_hash_resultado" text="Hash resultado (hex):" GridPane.rowIndex="4" />
+        <Label fx:id="label_hash_resultado" text="Hash resultado (hex):" GridPane.rowIndex="4" >
+            <font>
+                <Font name="Inter" size="13.0" />
+            </font>
+        </Label>
         <TextArea fx:id="texto_salida" editable="false" prefHeight="200.0" prefWidth="200.0" promptText="Hash"
             GridPane.rowIndex="5">
             <font>

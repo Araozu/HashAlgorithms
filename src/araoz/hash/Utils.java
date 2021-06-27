@@ -8,7 +8,7 @@ public class Utils {
         return (byte) Integer.parseInt(s, 16);
     }
 
-    private static byte[] longAByteArr(long l) {
+    static byte[] longAByteArr(long l) {
         byte[] arr = new byte[8];
         for (int i = 0; i < 8; i++) {
             arr[i] = (byte) ((l << i * 8) >>> 56);
@@ -36,7 +36,7 @@ public class Utils {
 
         long cantidadDeBits = rawInput.length * 8L - (paddingAplicado ? 4 : 0);
 
-        // Aplicar padding al ultimo bloque. TODO: Crear un nuevo bloque si no hay espacio para el padding?
+        // Aplicar padding al ultimo bloque.
         byte[] ultimoBloque = new byte[tamanoBloque];
         if (rawInput.length % tamanoBloque != 0) {
             int modulo = rawInput.length % tamanoBloque;
