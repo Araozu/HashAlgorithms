@@ -19,7 +19,21 @@ public class Controller {
             texto_salida.setText("");
             return;
         }
-        String resultado = esHex ? SHA1.runHEX(entrada) : SHA1.runUTF8(entrada);
+        SHA1 sha1 = new SHA1(entrada);
+        String resultado = esHex ? sha1.runHEX() : sha1.runUTF8();
         texto_salida.setText(resultado);
     }
+
+    public void calculateSHA256(MouseEvent mouseEvent) {
+        boolean esHex = codificacion_hex.isSelected();
+        String entrada = texto_entrada.getText();
+        if (entrada.isEmpty()) {
+            texto_salida.setText("");
+            return;
+        }
+        SHA256 sha256 = new SHA256(entrada);
+        String resultado = esHex ? sha256.runHEX() : sha256.runUTF8();
+        texto_salida.setText(resultado);
+    }
+
 }

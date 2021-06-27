@@ -1,6 +1,11 @@
 package araoz.hash;
 
-public class SHA1 {
+public class SHA1 extends SHA {
+    private final String input;
+
+    public SHA1(String input) {
+        this.input = input;
+    }
 
     /**
      * Secure Hash Standard - Section 5: Functions used
@@ -11,7 +16,7 @@ public class SHA1 {
      * @param numRonda el número de ronda, valor entre 0 y 79 inclusive
      * @return una palabra resultado de una función según el número de ronda.
      */
-    private static int funcionLineal(int B, int C, int D, int numRonda) {
+    int funcionLineal(int B, int C, int D, int numRonda) {
         if (numRonda >= 0 && numRonda <= 19) {
             return (B & C) | (~B & D);
         } else if (numRonda >= 20 && numRonda <= 39) {
@@ -25,7 +30,7 @@ public class SHA1 {
         }
     }
 
-    private static int constanteRonda(int numRonda) {
+    int constanteRonda(int numRonda) {
         if (numRonda >= 0 && numRonda <= 19) {
             return 0x5A827999;
         } else if (numRonda >= 20 && numRonda <= 39) {
@@ -40,31 +45,20 @@ public class SHA1 {
     }
 
     /**
-     * Secure Hash Standard - Section 3 point c
-     *
-     * @param X Palabra a rotar
-     * @param n cantidad de bits a rotar
-     * @return X rotado n bits a la izquierda
-     */
-    private static int rotacionCircularIzq(int X, int n) {
-        return (X << n) | (X >>> (32 - n));
-    }
-
-    /**
      * Ejecuta las 80 rondas de un bloque de SHA-1. (Secure Hash Algorithm, Section 8)
      *
      * @param bloque El bloque de 64 bytes (512 bits)
-     * @param estado Array de 5 int. Este método modifica el estado directamente.
+     * @param H      Array de 5 int (estado). Este método modifica el array directamente.
      */
-    private static void procesarBloque(byte[] bloque, int[] estado) {
+    private void procesarBloque(byte[] bloque, int[] H) {
         // Las 16 palabras del texto plano
         int[] W = Utils.dividirBloqueAPalabras32(bloque);
 
-        int A = estado[0],
-            B = estado[1],
-            C = estado[2],
-            D = estado[3],
-            E = estado[4];
+        int A = H[0],
+            B = H[1],
+            C = H[2],
+            D = H[3],
+            E = H[4];
 
         int MASK = 0x0000000F;
 
@@ -73,25 +67,25 @@ public class SHA1 {
 
             if (i >= 16) {
                 int aux = W[(s + 13) & MASK] ^ W[(s + 8) & MASK] ^ W[(s + 2) & MASK] ^ W[s];
-                W[s] = rotacionCircularIzq(aux, 1);
+                W[s] = ROTL(aux, 1);
             }
 
-            int TEMP = rotacionCircularIzq(A, 5) + funcionLineal(B, C, D, i) + E + W[s] + constanteRonda(i);
+            int TEMP = ROTL(A, 5) + funcionLineal(B, C, D, i) + E + W[s] + constanteRonda(i);
             E = D;
             D = C;
-            C = rotacionCircularIzq(B, 30);
+            C = ROTL(B, 30);
             B = A;
             A = TEMP;
         }
 
-        estado[0] += A;
-        estado[1] += B;
-        estado[2] += C;
-        estado[3] += D;
-        estado[4] += E;
+        H[0] += A;
+        H[1] += B;
+        H[2] += C;
+        H[3] += D;
+        H[4] += E;
     }
 
-    private static String run(byte[][] bloques) {
+    protected String run(byte[][] bloques) {
         // Estado inicial, a modificarse en cada bloque
         int[] estadoActual = {
             0x67452301,
@@ -112,11 +106,11 @@ public class SHA1 {
         return s.toString();
     }
 
-    public static String runHEX(String hex) {
-        return run(Utils.dividirHex(hex, 64));
+    public String runHEX() {
+        return run(Utils.dividirHex(input, 64));
     }
 
-    public static String runUTF8(String input) {
+    public String runUTF8() {
         return run(Utils.dividirString(input, 64));
     }
 

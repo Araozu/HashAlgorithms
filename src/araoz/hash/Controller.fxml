@@ -54,7 +54,8 @@
             </rowConstraints>
         </GridPane>
         <GridPane alignment="center" prefHeight="50.0" prefWidth="500.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
-            <Button mnemonicParsing="false" onMouseClicked="#calculateSHA1" text="SHA-1" />
+            <Button mnemonicParsing="false" onMouseClicked="#calculateSHA1" text="SHA-1" GridPane.columnIndex="0" />
+            <Button mnemonicParsing="false" onMouseClicked="#calculateSHA256" text="SHA-256" GridPane.columnIndex="1" />
             <columnConstraints>
                 <ColumnConstraints />
             </columnConstraints>
