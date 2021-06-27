@@ -4,9 +4,19 @@ import java.nio.charset.StandardCharsets;
 
 public class Utils {
 
-    public static byte[][] dividirString(String input, int tamanoBloque) {
-        byte[] rawInput = input.getBytes(StandardCharsets.UTF_8);
+    // TODO: Puede que altere los valores binarios?
+    private static byte hexStr2AByte(String s) {
+        return (byte) Integer.parseInt(s, 16);
+    }
 
+    /**
+     * Divide un array de bytes en bloques
+     * @param rawInput los bytes
+     * @param tamanoBloque el tamaño de un bloque en bytes
+     * @param paddingAplicado si el ultimo byte de rawInput ya tiene 1000
+     * @return Un array de array de bytes. El primer nivel divide bloques, el segundo nivel contiene los bytes.
+     */
+    private static byte[][] dividir(byte[] rawInput, int tamanoBloque, boolean paddingAplicado) {
         int cantidadBloques = (int) Math.ceil(rawInput.length / (tamanoBloque + 1.0));
 
         byte[][] bloques = new byte[cantidadBloques][tamanoBloque];
@@ -16,8 +26,9 @@ public class Utils {
             System.arraycopy(rawInput, i * tamanoBloque, bloques[i], 0, tamanoBloque);
         }
 
+        int cantidadDeBits = rawInput.length * 8 - (paddingAplicado? 4 : 0);
+
         // Aplicar padding al ultimo bloque y almacenarlo en ultimoBloque
-        // TODO: AL final del padding 64 bits se usan para almacenar la cantidad de bits del bloque. Arreglar
         byte[] ultimoBloque = new byte[tamanoBloque];
         if (rawInput.length % tamanoBloque != 0) {
             int modulo = rawInput.length % tamanoBloque;
@@ -25,8 +36,12 @@ public class Utils {
 
             System.arraycopy(rawInput, (cantidadBloques - 1) * tamanoBloque, ultimoBloque, 0, modulo);
 
-            // Ya que java no tiene unsigned byte, -128 representa 10000000
-            ultimoBloque[modulo] = -128;
+            // if (!paddingAplicado) {
+                // Ya que java no tiene unsigned byte, -128 representa 10000000
+                ultimoBloque[modulo] = -128;
+            // }
+
+            // TODO: Si al final quedan solo unos bytes, ¿Se crea un nuevo bloque lleno de ceros?
 
             // El resto de bloques de padding con valor 00000000
             for (int i = 0; i < bytesFaltantes - 2; i++) {
@@ -40,6 +55,27 @@ public class Utils {
         bloques[bloques.length - 1] = ultimoBloque;
 
         return bloques;
+    }
+
+    public static byte[][] dividirString(String input, int tamanoBloque) {
+        byte[] rawInput = input.getBytes(StandardCharsets.UTF_8);
+        return dividir(rawInput, tamanoBloque, false);
+    }
+
+    public static byte[][] dividirHex(String hex, int tamanoBloque) {
+        byte[] rawInput = new byte[(int) Math.ceil(hex.length() / 2.0)];
+
+        for (int i = 0; i < hex.length() / 2; i++) {
+            rawInput[i] = hexStr2AByte(hex.substring(i * 2, i * 2 + 2));
+        }
+
+        // Si quedó un caracter agregar '1000'
+        boolean tamanoEntradaImpar = hex.length() % 2 != 0;
+        if (tamanoEntradaImpar) {
+            rawInput[rawInput.length - 1] = hexStr2AByte(hex.charAt(hex.length() - 1) + "8");
+        }
+
+        return dividir(rawInput, tamanoBloque, tamanoEntradaImpar);
     }
 
     public static int[] dividirBloqueAPalabras32(byte[] bloque) {

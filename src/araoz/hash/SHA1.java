@@ -50,7 +50,7 @@ public class SHA1 {
      * @return X rotado n bits a la izquierda
      */
     private static int rotacionCircularIzq(int X, int n) {
-        return (X << n) | (X >> (32 - n));
+        return (X << n) | (X >>> (32 - n));
     }
 
     /**
@@ -85,6 +85,14 @@ public class SHA1 {
             C = rotacionCircularIzq(B, 30);
             B = A;
             A = TEMP;
+
+            // FIXME
+            System.out.println(Integer.toHexString(A) + "\t"
+                + Integer.toHexString(B) + "\t"
+                + Integer.toHexString(C) + "\t"
+                + Integer.toHexString(D) + "\t"
+                + Integer.toHexString(E) + "\t"
+            );
         }
 
         estado[0] += A;
@@ -94,9 +102,7 @@ public class SHA1 {
         estado[4] += E;
     }
 
-    public static String run(String input) {
-        byte[][] bloques = Utils.dividirString(input, 64);
-
+    private static String run(byte[][] bloques) {
         // Estado inicial, a modificarse en cada bloque
         int[] estadoActual = {
             0x67452301,
@@ -118,6 +124,14 @@ public class SHA1 {
         }
 
         return s.toString();
+    }
+
+    public static String runHEX(String hex) {
+        return run(Utils.dividirHex(hex, 64));
+    }
+
+    public static String runUTF8(String input) {
+        return run(Utils.dividirString(input, 64));
     }
 
 }

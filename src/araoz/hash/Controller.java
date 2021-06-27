@@ -13,10 +13,9 @@ public class Controller {
     public RadioButton codificacion_hex;
 
     public void calculateSHA1(MouseEvent mouseEvent) {
-        System.out.println("Radio HEX: " + codificacion_hex.isSelected());
-        System.out.println("Radio UTF-8" + codificacion_utf8.isSelected());
-        System.out.println("Entrada: " + texto_entrada.getText());
-        String resultado = SHA1.run(texto_entrada.getText());
+        boolean esHex = codificacion_hex.isSelected();
+        String entrada = texto_entrada.getText();
+        String resultado = esHex? SHA1.runHEX(entrada) : SHA1.runUTF8(entrada);
         texto_salida.setText(resultado);
     }
 }
