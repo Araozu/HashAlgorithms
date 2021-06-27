@@ -103,18 +103,22 @@ public class Utils {
         return palabras;
     }
 
+    public static long lShiftToLong(byte b, int n) {
+        return ((long) b << 56L) >>> (56L - n);
+    }
+
     public static long[] dividirBloqueAPalabras64(byte[] bloque) {
         long[] palabras = new long[bloque.length / 8];
         for (int i = 0; i < bloque.length / 8; i++) {
             int posicionBase = i * 8;
-            palabras[i] = bloque[posicionBase]
-                | bloque[posicionBase << 8]
-                | bloque[posicionBase << 16]
-                | bloque[posicionBase << 24]
-                | bloque[posicionBase << 32]
-                | bloque[posicionBase << 40]
-                | bloque[posicionBase << 48]
-                | bloque[posicionBase << 56];
+            palabras[i] = lShiftToLong(bloque[posicionBase], 56) |
+                lShiftToLong(bloque[posicionBase + 1], 48) |
+                lShiftToLong(bloque[posicionBase + 2], 40) |
+                lShiftToLong(bloque[posicionBase + 3], 32) |
+                lShiftToLong(bloque[posicionBase + 4], 24) |
+                lShiftToLong(bloque[posicionBase + 5], 16) |
+                lShiftToLong(bloque[posicionBase + 6], 8) |
+                lShiftToLong(bloque[posicionBase + 7], 0);
         }
         return palabras;
     }

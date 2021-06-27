@@ -15,7 +15,11 @@ public class Controller {
     public void calculateSHA1(MouseEvent mouseEvent) {
         boolean esHex = codificacion_hex.isSelected();
         String entrada = texto_entrada.getText();
-        String resultado = esHex? SHA1.runHEX(entrada) : SHA1.runUTF8(entrada);
+        if (entrada.isEmpty()) {
+            texto_salida.setText("");
+            return;
+        }
+        String resultado = esHex ? SHA1.runHEX(entrada) : SHA1.runUTF8(entrada);
         texto_salida.setText(resultado);
     }
 }

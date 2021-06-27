@@ -106,9 +106,6 @@ public class SHA1 {
 
         StringBuilder s = new StringBuilder();
         for (int palabra : estadoActual) {
-            // Codificar en UTF-8
-            // byte[] bytes = ByteBuffer.allocate(4).putInt(palabra).array();
-            // s.append(new String(bytes, StandardCharsets.UTF_8));
             s.append(Integer.toHexString(palabra));
         }
 
