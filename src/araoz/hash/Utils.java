@@ -8,6 +8,14 @@ public class Utils {
         return (byte) Integer.parseInt(s, 16);
     }
 
+    private static byte[] longAByteArr(long l) {
+        byte[] arr = new byte[8];
+        for (int i = 0; i < 8; i++) {
+            arr[i] = (byte) ((l << i * 8) >>> 56);
+        }
+        return arr;
+    }
+
     /**
      * Divide un array de bytes en bloques
      *
@@ -26,9 +34,9 @@ public class Utils {
             System.arraycopy(rawInput, i * tamanoBloque, bloques[i], 0, tamanoBloque);
         }
 
-        int cantidadDeBits = rawInput.length * 8 - (paddingAplicado ? 4 : 0);
+        long cantidadDeBits = rawInput.length * 8L - (paddingAplicado ? 4 : 0);
 
-        // Aplicar padding al ultimo bloque y almacenarlo en ultimoBloque
+        // Aplicar padding al ultimo bloque. TODO: Crear un nuevo bloque si no hay espacio para el padding?
         byte[] ultimoBloque = new byte[tamanoBloque];
         if (rawInput.length % tamanoBloque != 0) {
             int modulo = rawInput.length % tamanoBloque;
@@ -36,17 +44,22 @@ public class Utils {
 
             System.arraycopy(rawInput, (cantidadBloques - 1) * tamanoBloque, ultimoBloque, 0, modulo);
 
-            // if (!paddingAplicado) {
-            // Ya que java no tiene unsigned byte, -128 representa 10000000
-            ultimoBloque[modulo] = -128;
-            // }
+            // Padding
+            if (!paddingAplicado) {
+                // Ya que java no tiene unsigned byte, -128 representa 10000000
+                ultimoBloque[modulo] = -128;
+            }
 
-            // TODO: Si al final quedan solo unos bytes, ¿Se crea un nuevo bloque lleno de ceros?
+            // Asumir que siempre quedan al menos 8 bytes al final
 
             // El resto de bloques de padding con valor 00000000
-            for (int i = 0; i < bytesFaltantes - 2; i++) {
+            int bytesEnBlanco = bytesFaltantes - 1 - (paddingAplicado ? 0 : 1) - 8;
+            for (int i = 0; i < bytesEnBlanco - 2; i++) {
                 ultimoBloque[modulo + i + 1] = 0;
             }
+
+            // Colocar la cantidad de bits al final
+            System.arraycopy(longAByteArr(cantidadDeBits), 0, ultimoBloque, ultimoBloque.length - 8, 8);
         } else {
             System.arraycopy(rawInput, rawInput.length / tamanoBloque - 1, ultimoBloque, 0, tamanoBloque);
         }
@@ -83,6 +96,7 @@ public class Utils {
      * Al castear byte a int se rellena con '1', ejm: AC -> FFFFFFAC,
      * lo cual causa problemas con el operador OR. Por ello primero se desplaza 24 bits a la izq. :
      * FFFFFFAC -> AC000000 y luego se desplaza a la derecha para compensar.
+     *
      * @param b byte a desplazar
      * @param n nro de bits a desplazar
      * @return un int con los bits desplazados, y el resto de bits son 0
@@ -121,10 +135,6 @@ public class Utils {
                 lShiftToLong(bloque[posicionBase + 7], 0);
         }
         return palabras;
-    }
-
-    public static int sumarMod32(int a, int b) {
-        return 0;
     }
 
 }
