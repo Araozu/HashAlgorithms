@@ -4,7 +4,39 @@ import java.nio.charset.StandardCharsets;
 
 public class Utils {
 
-    private static byte hexStr2AByte(String s) {
+    /**
+     * Rotacion circular izquierda
+     *
+     * @param X Palabra a rotar
+     * @param n cantidad de bits a rotar
+     * @return X rotado n bits a la izquierda circularmente
+     */
+    static int ROTL(int X, int n) {
+        return (X << n) | (X >>> (32 - n));
+    }
+
+    /**
+     * Rotacion circular derecha
+     *
+     * @param X Palabra a rotar
+     * @param n cantidad de bits a rotar
+     * @return X rotado n bits a la derecha circularmente
+     */
+    static int ROTR(int X, int n) {
+        return (X >>> n) | (X << (32 - n));
+    }
+
+    /**
+     * Rotacion derecha
+     * @param X Palabra a rotar
+     * @param n cantidad de bits a rotar
+     * @return X rotado n bits a la derecha. Los bits a la derecha se pierden.
+     */
+    static int SHR(int X, int n) {
+        return X >>> n;
+    }
+
+    static byte hexStr2AByte(String s) {
         return (byte) Integer.parseInt(s, 16);
     }
 

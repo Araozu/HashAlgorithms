@@ -1,5 +1,7 @@
 package araoz.hash;
 
+import static araoz.hash.Utils.ROTL;
+
 public class SHA1 extends SHA {
     private final String input;
 

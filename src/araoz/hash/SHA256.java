@@ -1,5 +1,8 @@
 package araoz.hash;
 
+import static araoz.hash.Utils.ROTR;
+import static araoz.hash.Utils.SHR;
+
 /**
  * Bloques de 512 bits, palabras de 32 bits, hash de 256 bits
  */

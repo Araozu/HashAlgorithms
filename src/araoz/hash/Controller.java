@@ -36,4 +36,15 @@ public class Controller {
         texto_salida.setText(resultado);
     }
 
+    public void calculateMD5(MouseEvent mouseEvent) {
+        boolean esHex = codificacion_hex.isSelected();
+        String entrada = texto_entrada.getText();
+        if (entrada.isEmpty()) {
+            texto_salida.setText("");
+            return;
+        }
+        MD5 sha256 = new MD5(entrada);
+        String resultado = esHex ? sha256.runHEX() : sha256.runUTF8();
+        texto_salida.setText(resultado);
+    }
 }

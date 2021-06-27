@@ -59,7 +59,7 @@
                     <Font name="Inter" size="13.0" />
                 </font>
             </Button>
-            <Button mnemonicParsing="false" text="MD5" GridPane.columnIndex="1" >
+            <Button mnemonicParsing="false" onMouseClicked="#calculateMD5" text="MD5" GridPane.columnIndex="1" >
                 <font>
                     <Font name="Inter" size="13.0" />
                 </font>
