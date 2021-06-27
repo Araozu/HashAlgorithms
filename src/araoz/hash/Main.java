@@ -17,19 +17,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    /*
-    01100111010001010010001100000001
-    10011000101110101101110011111110
-    10011000101110101101110011111111
-    10011000101110101101110011111110
-    */
-
     public static void main(String[] args) {
-        int i = 0x67452301;
-        int j = ~0x67452301;
-        System.out.println(Integer.toBinaryString(i));
-        System.out.println(Integer.toBinaryString(j));
-        System.out.println("\n----------------------------------\n");
         launch(args);
     }
 

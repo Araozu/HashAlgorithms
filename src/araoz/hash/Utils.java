@@ -4,7 +4,6 @@ import java.nio.charset.StandardCharsets;
 
 public class Utils {
 
-    // TODO: Puede que altere los valores binarios?
     private static byte hexStr2AByte(String s) {
         return (byte) Integer.parseInt(s, 16);
     }
@@ -79,18 +78,27 @@ public class Utils {
         return dividir(rawInput, tamanoBloque, tamanoEntradaImpar);
     }
 
-    public static int lShiftInt(int v, int l) {
-        return (v << 24) >>> (24 - l);
+    /**
+     * Convierte 'b' a int y desplaza 'n' bits a la izquierda.
+     * Al castear byte a int se rellena con '1', ejm: AC -> FFFFFFAC,
+     * lo cual causa problemas con el operador OR. Por ello primero se desplaza 24 bits a la izq. :
+     * FFFFFFAC -> AC000000 y luego se desplaza a la derecha para compensar.
+     * @param b byte a desplazar
+     * @param n nro de bits a desplazar
+     * @return un int con los bits desplazados, y el resto de bits son 0
+     */
+    public static int lShiftToInt(byte b, int n) {
+        return (b << 24) >>> (24 - n);
     }
 
     public static int[] dividirBloqueAPalabras32(byte[] bloque) {
         int[] palabras = new int[bloque.length / 4];
         for (int i = 0; i < bloque.length / 4; i++) {
             int posicionBase = i * 4;
-            palabras[i] = lShiftInt(bloque[posicionBase], 24) |
-                lShiftInt(bloque[posicionBase + 1], 16) |
-                lShiftInt(bloque[posicionBase + 2], 8) |
-                lShiftInt(bloque[posicionBase + 3], 0);
+            palabras[i] = lShiftToInt(bloque[posicionBase], 24) |
+                lShiftToInt(bloque[posicionBase + 1], 16) |
+                lShiftToInt(bloque[posicionBase + 2], 8) |
+                lShiftToInt(bloque[posicionBase + 3], 0);
         }
         return palabras;
     }

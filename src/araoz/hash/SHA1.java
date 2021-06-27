@@ -76,65 +76,12 @@ public class SHA1 {
                 W[s] = rotacionCircularIzq(aux, 1);
             }
 
-            /*
-            A = 67452301
-            B = EFCDAB89
-            C = 98BADCFE
-            D = 10325476
-            E = C3D2E1F0
-
-            rotacion: E8A4602C -            11101000101001000110000000101100
-                                            11101000101001000110000000101100
-            fun: 0 | 10325476 -> 10325476 -
-                                            10011000101110101101110011111110
-            suma:                F8D6B4A6 - 11111000110101101011010010100110
-
-            11101111110011011010101110001001 &
-            10011000101110101101110011111110 =
-            10001000100010001000100010001000
-
-           ~11101111110011011010101110001001 =
-            00010000001100100101010001110110
-            00010000001100100101010001110110
-
-            00010000001100100101010001110110 &
-            00010000001100100101010001110110 =
-            00010000001100100101010001110110
-
-            00010000001100100101010001110110 |
-            10001000100010001000100010001000 =
-            10011000101110101101110011111111 <- res
-            10011000101110101101110011111110
-
-            rotacion + fun
-            11101000101001000110000000101100 +
-            10011000101110101101110011111110 =
-            10000001010111110011110100101010
-            10000001010111110011110100101010
-
-            */
-
-            if (A == 0x67452301) {
-                int suma = rotacionCircularIzq(A, 5) + funcionLineal(B, C, D, i) + E;
-                int ws = W[s];
-                System.out.println("W[s]: " + ws + " - " + Integer.toHexString(ws));
-                System.out.println(Integer.toBinaryString(suma + ws));
-            }
-
             int TEMP = rotacionCircularIzq(A, 5) + funcionLineal(B, C, D, i) + E + W[s] + constanteRonda(i);
             E = D;
             D = C;
             C = rotacionCircularIzq(B, 30);
             B = A;
             A = TEMP;
-
-            // FIXME
-            System.out.println(Integer.toHexString(A) + "\t"
-                + Integer.toHexString(B) + "\t"
-                + Integer.toHexString(C) + "\t"
-                + Integer.toHexString(D) + "\t"
-                + Integer.toHexString(E) + "\t"
-            );
         }
 
         estado[0] += A;
