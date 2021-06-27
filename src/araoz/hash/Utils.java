@@ -17,6 +17,7 @@ public class Utils {
         }
 
         // Aplicar padding al ultimo bloque y almacenarlo en ultimoBloque
+        // TODO: AL final del padding 64 bits se usan para almacenar la cantidad de bits del bloque. Arreglar
         byte[] ultimoBloque = new byte[tamanoBloque];
         if (rawInput.length % tamanoBloque != 0) {
             int modulo = rawInput.length % tamanoBloque;
@@ -46,9 +47,9 @@ public class Utils {
         for (int i = 0; i < bloque.length / 4; i++) {
             int posicionBase = i * 4;
             palabras[i] = bloque[posicionBase]
-                | bloque[posicionBase << 8]
-                | bloque[posicionBase << 16]
-                | bloque[posicionBase << 24];
+                | bloque[posicionBase + 1] << 8
+                | bloque[posicionBase + 2] << 16
+                | bloque[posicionBase + 3] << 24;
         }
         return palabras;
     }
@@ -67,6 +68,10 @@ public class Utils {
                 | bloque[posicionBase << 56];
         }
         return palabras;
+    }
+
+    public static int sumarMod32(int a, int b) {
+        return 0;
     }
 
 }

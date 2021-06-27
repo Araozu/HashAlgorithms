@@ -14,7 +14,8 @@
         <RowConstraints />
         <RowConstraints />
         <RowConstraints />
-      <RowConstraints />
+        <RowConstraints />
+        <RowConstraints />
     </rowConstraints>
     <children>
         <Label text="Ingrese el texto plano:">
@@ -28,6 +29,29 @@
             </font>
         </TextArea>
         <GridPane alignment="center" prefHeight="50.0" prefWidth="500.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints />
+            </columnConstraints>
+            <children>
+                <Label text="Codificación:">
+                    <font>
+                        <Font name="Inter" size="13.0" />
+                    </font>
+                </Label>
+                <RadioButton fx:id="codificacion_utf8" mnemonicParsing="false" prefHeight="18.0" prefWidth="112.0" selected="true" text="UTF-8" GridPane.columnIndex="1">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="tipo_entrada" />
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="codificacion_hex" mnemonicParsing="false" prefHeight="18.0" prefWidth="209.0" text="HEX" toggleGroup="$tipo_entrada" GridPane.columnIndex="2" />
+            </children>
+            <rowConstraints>
+                <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+        <GridPane alignment="center" prefHeight="50.0" prefWidth="500.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
             <Button mnemonicParsing="false" onMouseClicked="#calculateSHA1" text="SHA-1" />
             <columnConstraints>
                 <ColumnConstraints />
@@ -36,8 +60,8 @@
                 <RowConstraints />
             </rowConstraints>
         </GridPane>
-        <Label fx:id="label_hash_resultado" text="Hash resultado:" GridPane.rowIndex="3" />
-        <TextArea fx:id="texto_salida" editable="false" prefHeight="200.0" prefWidth="200.0" promptText="Hash" GridPane.rowIndex="4">
+        <Label fx:id="label_hash_resultado" text="Hash resultado:" GridPane.rowIndex="4" />
+        <TextArea fx:id="texto_salida" editable="false" prefHeight="200.0" prefWidth="200.0" promptText="Hash" GridPane.rowIndex="5">
             <font>
                 <Font name="Inter" size="13.0" />
             </font>
