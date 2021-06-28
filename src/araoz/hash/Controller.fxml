@@ -54,7 +54,7 @@
             </rowConstraints>
         </GridPane>
         <GridPane alignment="center" prefHeight="50.0" prefWidth="500.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
-            <Button mnemonicParsing="false" text="MD4" GridPane.columnIndex="0" >
+            <Button mnemonicParsing="false" onMouseClicked="#calculateMD4" text="MD4" GridPane.columnIndex="0" >
                 <font>
                     <Font name="Inter" size="13.0" />
                 </font>
