@@ -1,6 +1,5 @@
 package araoz.hash;
 
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 
 public class Utils {
@@ -166,23 +165,6 @@ public class Utils {
         return xored;
     }
 
-    // Se asume que a.length >= b.length
-    public static int[] intArrXOR(int[] a, int[] b) {
-        int[] xored = new int[a.length];
-
-        int posBaseB = b.length - a.length;
-        for (int i = 0; i < a.length; i++, posBaseB++) {
-
-            if (posBaseB < 0) {
-                xored[i] = a[i];
-            } else {
-                xored[i] = a[i] ^ b[posBaseB];
-            }
-        }
-
-        return xored;
-    }
-
     public static byte[][] dividirString(String input, int tamanoBloque) {
         byte[] rawInput = input.getBytes(StandardCharsets.UTF_8);
         return dividir(rawInput, tamanoBloque, false);
@@ -226,26 +208,6 @@ public class Utils {
                 lShiftToInt(bloque[posicionBase + 1], 16) |
                 lShiftToInt(bloque[posicionBase + 2], 8) |
                 lShiftToInt(bloque[posicionBase + 3], 0);
-        }
-        return palabras;
-    }
-
-    public static long lShiftToLong(byte b, int n) {
-        return ((long) b << 56L) >>> (56L - n);
-    }
-
-    public static long[] dividirBloqueAPalabras64(byte[] bloque) {
-        long[] palabras = new long[bloque.length / 8];
-        for (int i = 0; i < bloque.length / 8; i++) {
-            int posicionBase = i * 8;
-            palabras[i] = lShiftToLong(bloque[posicionBase], 56) |
-                lShiftToLong(bloque[posicionBase + 1], 48) |
-                lShiftToLong(bloque[posicionBase + 2], 40) |
-                lShiftToLong(bloque[posicionBase + 3], 32) |
-                lShiftToLong(bloque[posicionBase + 4], 24) |
-                lShiftToLong(bloque[posicionBase + 5], 16) |
-                lShiftToLong(bloque[posicionBase + 6], 8) |
-                lShiftToLong(bloque[posicionBase + 7], 0);
         }
         return palabras;
     }

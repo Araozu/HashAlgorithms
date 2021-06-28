@@ -29,13 +29,13 @@ public abstract class MD {
                 int diferencia = 8 - hex.length();
                 StringBuilder aux = new StringBuilder();
                 for (int i = 0; i < diferencia; i++) {
-                    aux.append(" ");
+                    aux.append("0");
                 }
                 aux.append(hex);
                 hex = aux.toString();
             }
 
-            // Agregar los bytes invertidos, no se porque
+            // Agregar los bytes invertidos
             s.append(hex, 6, 8);
             s.append(hex, 4, 6);
             s.append(hex, 2, 4);
@@ -95,23 +95,6 @@ public abstract class MD {
             bytes[i] = 0;
         }
 
-        /*
-        abcdef
-        61 62 63 64 65 66
-
-        64636261
-        00806665
-
-        coloca cada 4 bytes al reves
-
-        b1 b2 b3 b4 b5 b6 b7 b8
-        b4 b3 b2 b1 b8 b7 b6 b5
-         */
-
-        /*
-        Modificar bytes y bit de padding en el orden de MD5: cada 4 bytes al reves
-        b1 b2 b3 b4 b5 b6 b7 b8 -> b4 b3 b2 b1 b8 b7 b6 b5
-         */
         int bytesFaltantesParaInt = 4 - ((numBytes + 1) % 4);
         int indice = (numBytes + bytesFaltantesParaInt + 1) / 4;
         for (int i = 0; i < indice; i++) {

@@ -97,10 +97,10 @@ public class HMACController {
         }
 
         // Primera parte
-        String primeraParteHex = Utils.intArrAHex(Utils.intArrXOR(opad, Kprima));
+        String primeraParteHex = Utils.intArrAHex(Utils.intArrXOR2(opad, Kprima));
 
         // Segunda parte
-        String interiorHex = Utils.intArrAHex(Utils.intArrXOR(ipad, Kprima));
+        String interiorHex = Utils.intArrAHex(Utils.intArrXOR2(ipad, Kprima));
         String mHex = esHEX? m : Utils.strToHex(m);
         String segundaParteHex = new SHA1(interiorHex + mHex).runHEX();
 
@@ -126,10 +126,10 @@ public class HMACController {
         }
 
         // Primera parte
-        String primeraParteHex = Utils.intArrAHex(Utils.intArrXOR(opad, Kprima));
+        String primeraParteHex = Utils.intArrAHex(Utils.intArrXOR2(opad, Kprima));
 
         // Segunda parte
-        String interiorHex = Utils.intArrAHex(Utils.intArrXOR(ipad, Kprima));
+        String interiorHex = Utils.intArrAHex(Utils.intArrXOR2(ipad, Kprima));
         String mHex = esHEX? m : Utils.strToHex(m);
         String segundaParteHex = new SHA256(interiorHex + mHex).runHEX();
 
