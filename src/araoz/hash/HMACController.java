@@ -14,11 +14,11 @@ public class HMACController {
     public TextField clave;
     public TextArea texto_resultado;
 
-    private int[] ipad = {
+    private final int[] ipad = {
         0x36363636, 0x36363636, 0x36363636, 0x36363636, 0x36363636, 0x36363636, 0x36363636, 0x36363636,
         0x36363636, 0x36363636, 0x36363636, 0x36363636, 0x36363636, 0x36363636, 0x36363636, 0x36363636
     };
-    private int[] opad = {
+    private final int[] opad = {
         0x5c5c5c5c, 0x5c5c5c5c, 0x5c5c5c5c, 0x5c5c5c5c, 0x5c5c5c5c, 0x5c5c5c5c, 0x5c5c5c5c, 0x5c5c5c5c,
         0x5c5c5c5c, 0x5c5c5c5c, 0x5c5c5c5c, 0x5c5c5c5c, 0x5c5c5c5c, 0x5c5c5c5c, 0x5c5c5c5c, 0x5c5c5c5c,
     };
@@ -111,6 +111,31 @@ public class HMACController {
     }
 
     public void calculateSHA256(MouseEvent mouseEvent) {
+        // Texto plano en UTF-8 o HEX
+        String m = texto_plano.getText();
+        // Clave en HEX
+        String K = clave.getText();
+        // Si el texto plano es HEX
+        boolean esHEX = codificacion_hex.isSelected();
 
+        int[] Kprima;
+        if (K.length() > 128) {
+            Kprima = Utils.hexAIntArr(new SHA256(K).runHEX());
+        } else {
+            Kprima = Utils.hexAIntArr(K);
+        }
+
+        // Primera parte
+        String primeraParteHex = Utils.intArrAHex(Utils.intArrXOR(opad, Kprima));
+
+        // Segunda parte
+        String interiorHex = Utils.intArrAHex(Utils.intArrXOR(ipad, Kprima));
+        String mHex = esHEX? m : Utils.strToHex(m);
+        String segundaParteHex = new SHA256(interiorHex + mHex).runHEX();
+
+        // Hash final
+        String hash = new SHA256(primeraParteHex + segundaParteHex).runHEX();
+
+        texto_resultado.setText(hash);
     }
 }
