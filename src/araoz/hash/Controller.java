@@ -4,10 +4,16 @@ import araoz.hash.md.MD4;
 import araoz.hash.md.MD5;
 import araoz.hash.sha.SHA1;
 import araoz.hash.sha.SHA256;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Controller {
     public TextArea texto_entrada;
@@ -62,5 +68,12 @@ public class Controller {
         MD4 md5 = new MD4(entrada);
         String resultado = esHex ? md5.runHEX() : md5.runUTF8();
         texto_salida.setText(resultado);
+    }
+
+    public void cambiarAHMAC(MouseEvent mouseEvent) throws Exception {
+        Stage stage = (Stage) texto_entrada.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("HMAC.fxml"));
+        Scene scene = new Scene(loader.load());
+        stage.setScene(scene);
     }
 }

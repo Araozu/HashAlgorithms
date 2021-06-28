@@ -1,5 +1,6 @@
 package araoz.hash;
 
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 
 public class Utils {
@@ -101,6 +102,85 @@ public class Utils {
         bloques[bloques.length - 1] = ultimoBloque;
 
         return bloques;
+    }
+
+    public static String padKey(String hex) {
+        int diferencia = 128 - (hex.length() % 128);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < diferencia; i++) {
+            sb.append("0");
+        }
+        return hex + sb;
+    }
+
+    public static String strToHex(String arg) {
+        byte[] bytes = arg.getBytes(StandardCharsets.UTF_8);
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02X", b));
+        }
+        return sb.toString();
+    }
+
+    public static String intArrAHex(int[] bin) {
+        StringBuilder sb = new StringBuilder();
+        for (int i : bin) {
+            sb.append(Integer.toHexString(i));
+        }
+        return sb.toString();
+    }
+
+    public static int[] hexAIntArr(String hex) {
+        int[] words = new int[(int) Math.ceil(hex.length() / 8.0)];
+
+        // padding al hex para que sea multiplo
+        int faltante = hex.length() % 8 == 0 ? 0 : 8 - (hex.length() % 8);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < faltante; i++) {
+            sb.append("0");
+        }
+        String input = sb + hex;
+
+        for (int i = 0; i < words.length; i++) {
+            int posStrBase = i * 8;
+            words[i] = Integer.parseInt(input.substring(posStrBase, posStrBase + 8), 16);
+        }
+
+        return words;
+    }
+
+    // Se asume que a.length >= b.length
+    public static int[] intArrXOR2(int[] a, int[] b) {
+        int[] xored = new int[a.length];
+
+        for (int i = 0; i < b.length; i++) {
+            xored[i] = a[i] ^ b[i];
+        }
+
+        if (a.length > b.length) {
+            int posInicio = b.length;
+            int diferencia = a.length - b.length;
+            System.arraycopy(a, posInicio, xored, posInicio, diferencia);
+        }
+
+        return xored;
+    }
+
+    // Se asume que a.length >= b.length
+    public static int[] intArrXOR(int[] a, int[] b) {
+        int[] xored = new int[a.length];
+
+        int posBaseB = b.length - a.length;
+        for (int i = 0; i < a.length; i++, posBaseB++) {
+
+            if (posBaseB < 0) {
+                xored[i] = a[i];
+            } else {
+                xored[i] = a[i] ^ b[posBaseB];
+            }
+        }
+
+        return xored;
     }
 
     public static byte[][] dividirString(String input, int tamanoBloque) {
