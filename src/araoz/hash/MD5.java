@@ -42,10 +42,35 @@ public class MD5 {
             bytes[i] = 0;
         }
 
-        // 97 98 99 -128
-        // 61 62 63 80
-        // 01100001011000100110001110000000
-        // 1633837952
+        /*
+        abcdef
+        61 62 63 64 65 66
+
+        64636261
+        00806665
+
+        coloca cada 4 bytes al reves
+
+        b1 b2 b3 b4 b5 b6 b7 b8
+        b4 b3 b2 b1 b8 b7 b6 b5
+         */
+
+        /*
+        Modificar bytes y bit de padding en el orden de MD5: cada 4 bytes al reves
+        b1 b2 b3 b4 b5 b6 b7 b8 -> b4 b3 b2 b1 b8 b7 b6 b5
+         */
+        int bytesFaltantesParaInt = 4 - ((numBytes + 1) % 4);
+        int indice = (numBytes + bytesFaltantesParaInt + 1) / 4;
+        for (int i = 0; i < indice; i++) {
+            byte b1 = bytes[i * 4];
+            byte b2 = bytes[i * 4 + 1];
+            byte b3 = bytes[i * 4 + 2];
+            byte b4 = bytes[i * 4 + 3];
+            bytes[i * 4] = b4;
+            bytes[i * 4 + 1] = b3;
+            bytes[i * 4 + 2] = b2;
+            bytes[i * 4 + 3] = b1;
+        }
 
         // Colocar la cantidad de bits al final
         {
@@ -67,6 +92,7 @@ public class MD5 {
             }
         }
 
+        System.out.println(Integer.toHexString(bloques[0][0]));
         return bloques;
     }
 
@@ -222,10 +248,10 @@ public class MD5 {
 
     private String run(int[][] bloques) {
         int[] estadoActual = {
-            0x01234567,
-            0x89abcdef,
-            0xfedcba98,
-            0x76543210
+            0x67452301,
+            0xEFCDAB89,
+            0x98BADCFE,
+            0x10325476
         };
         for (int[] bloque : bloques) {
             procesarBloque(bloque, estadoActual);
