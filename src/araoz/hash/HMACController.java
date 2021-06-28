@@ -24,7 +24,32 @@ public class HMACController {
     };
 
     public void calculateMD4(MouseEvent mouseEvent) {
+        // Texto plano en UTF-8 o HEX
+        String m = texto_plano.getText();
+        // Clave en HEX
+        String K = clave.getText();
+        // Si el texto plano es HEX
+        boolean esHEX = codificacion_hex.isSelected();
 
+        int[] Kprima;
+        if (K.length() > 128) {
+            Kprima = Utils.hexAIntArr(new MD4(K).runHEX());
+        } else {
+            Kprima = Utils.hexAIntArr(Utils.padKey(K));
+        }
+
+        // Primera parte
+        String primeraParteHex = Utils.intArrAHex(Utils.intArrXOR2(opad, Kprima));
+
+        // Segunda parte
+        String interiorHex = Utils.intArrAHex(Utils.intArrXOR2(ipad, Kprima));
+        String mHex = esHEX? m : Utils.strToHex(m);
+        String segundaParteHex = new MD4(interiorHex + mHex).runHEX();
+
+        // Hash final
+        String hash = new MD4(primeraParteHex + segundaParteHex).runHEX();
+
+        texto_resultado.setText(hash);
     }
 
     public void calculateMD5(MouseEvent mouseEvent) {
