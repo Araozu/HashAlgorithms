@@ -1,5 +1,9 @@
 package araoz.hash;
 
+import araoz.hash.md.MD4;
+import araoz.hash.md.MD5;
+import araoz.hash.sha.SHA1;
+import araoz.hash.sha.SHA256;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;

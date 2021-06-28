@@ -11,7 +11,7 @@ public class Utils {
      * @param n cantidad de bits a rotar
      * @return X rotado n bits a la izquierda circularmente
      */
-    static int ROTL(int X, int n) {
+    public static int ROTL(int X, int n) {
         return (X << n) | (X >>> (32 - n));
     }
 
@@ -22,25 +22,26 @@ public class Utils {
      * @param n cantidad de bits a rotar
      * @return X rotado n bits a la derecha circularmente
      */
-    static int ROTR(int X, int n) {
+    public static int ROTR(int X, int n) {
         return (X >>> n) | (X << (32 - n));
     }
 
     /**
      * Rotacion derecha
+     *
      * @param X Palabra a rotar
      * @param n cantidad de bits a rotar
      * @return X rotado n bits a la derecha. Los bits a la derecha se pierden.
      */
-    static int SHR(int X, int n) {
+    public static int SHR(int X, int n) {
         return X >>> n;
     }
 
-    static byte hexStr2AByte(String s) {
+    public static byte hexStr2AByte(String s) {
         return (byte) Integer.parseInt(s, 16);
     }
 
-    static byte[] longAByteArr(long l) {
+    public static byte[] longAByteArr(long l) {
         byte[] arr = new byte[8];
         for (int i = 0; i < 8; i++) {
             arr[i] = (byte) ((l << i * 8) >>> 56);

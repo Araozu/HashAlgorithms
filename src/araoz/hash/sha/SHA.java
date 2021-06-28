@@ -1,4 +1,4 @@
-package araoz.hash;
+package araoz.hash.sha;
 
 public abstract class SHA {
 

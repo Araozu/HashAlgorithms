@@ -1,4 +1,6 @@
-package araoz.hash;
+package araoz.hash.sha;
+
+import araoz.hash.Utils;
 
 import static araoz.hash.Utils.ROTL;
 
